@@ -1,0 +1,188 @@
+
+MyApiProject Documentation
+1.Table of Contents
+2.Project Overview
+3.Setup Instructions
+4.Database Schema
+5.API Usage
+6.Examples
+7.Contact
+
+Project Overview
+MyApiProject is a .NET Core Web API designed to manage products. This API allows users to create, read, update, and delete products from a SQL Server database using Entity Framework Core.
+
+Setup Instructions
+Prerequisites
+.NET 7.0 SDK
+SQL Server 
+Visual Studio 2022 (or another IDE like Visual Studio Code)
+Steps
+
+1.Clone the Repository:
+git clone https://github.com/your-username/MyApiProject.git
+cd MyApiProject
+Restore NuGet Packages:
+
+2.Open the project in Visual Studio or your preferred IDE and restore the NuGet packages by running:
+
+dotnet restore
+
+3.Configure the Database Connection:
+
+Update the appsettings.json file with your SQL Server connection string:
+
+json
+Copy code
+{
+  "ConnectionStrings": {
+    "DispoistionConnection": "server=****; database=suryapractice;User Id=****;Password=****;TrustServerCertificate=true;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+Create the Database and Tables:
+
+Open Azure Data Studio or SQL Server Management Studio (SSMS), connect to your SQL Server, and run the following SQL script to create the Products table and insert dummy data:
+
+sql
+Copy code
+CREATE DATABASE suryapractice;
+USE suryapractice;
+
+CREATE TABLE Products (
+    Id INT PRIMARY KEY IDENTITY,
+    Name NVARCHAR(100) NOT NULL,
+    Price DECIMAL(18, 2) NOT NULL
+);
+
+INSERT INTO Products (Name, Price) VALUES
+('Product 1', 9.99),
+('Product 2', 19.99),
+('Product 3', 29.99);
+Apply Migrations:
+
+In your IDE, open the Package Manager Console (or terminal) and run the following commands to create and apply the database migrations:
+
+bash
+Copy code
+dotnet ef migrations add InitialCreate -Context AppDbContext
+dotnet ef database update -Context AppDbContext
+Run the Application:
+
+Start the application by pressing F5 in Visual Studio or running:
+
+bash
+Copy code
+dotnet run
+The API will be accessible at https://localhost:7001.
+
+Database Schema
+The database schema consists of a single table, Products, with the following structure:
+
+Column	Data Type	Constraints
+Id	INT	PRIMARY KEY, IDENTITY
+Name	NVARCHAR(100)	NOT NULL
+Price	DECIMAL(18, 2)	NOT NULL
+API Usage
+Endpoints
+GET /api/products
+
+Retrieves all products.
+Response:
+json
+Copy code
+[
+    {
+        "id": 1,
+        "name": "Product 1",
+        "price": 9.99
+    },
+    ...
+]
+GET /api/products/{id}
+
+Retrieves a product by its ID.
+Response:
+json
+Copy code
+{
+    "id": 1,
+    "name": "Product 1",
+    "price": 9.99
+}
+POST /api/products
+
+Creates a new product.
+Request:
+json
+Copy code
+{
+    "name": "Product 4",
+    "price": 39.99
+}
+Response:
+json
+Copy code
+{
+    "id": 4,
+    "name": "Product 4",
+    "price": 39.99
+}
+PUT /api/products/{id}
+
+Updates an existing product.
+Request:
+json
+Copy code
+{
+    "name": "Updated Product",
+    "price": 49.99
+}
+Response:
+json
+Copy code
+{
+    "id": 1,
+    "name": "Updated Product",
+    "price": 49.99
+}
+DELETE /api/products/{id}
+
+Deletes a product by its ID.
+Response:
+json
+Copy code
+{
+    "message": "Product deleted successfully"
+}
+Examples
+Get All Products
+bash
+Copy code
+curl -X GET "https://localhost:7001/api/products" -H "accept: text/json"
+Get Product by ID
+bash
+Copy code
+curl -X GET "https://localhost:7001/api/products/1" -H "accept: text/json"
+Create a New Product
+bash
+Copy code
+curl -X POST "https://localhost:7001/api/products" -H "accept: text/json" -H "Content-Type: application/json" -d "{\"name\":\"Product 4\",\"price\":39.99}"
+Update an Existing Product
+bash
+Copy code
+curl -X PUT "https://localhost:7001/api/products/1" -H "accept: text/json" -H "Content-Type: application/json" -d "{\"name\":\"Updated Product\",\"price\":49.99}"
+Delete a Product
+bash
+Copy code
+curl -X DELETE "https://localhost:7001/api/products/1" -H "accept: text/json"
+Contact
+For any questions or support, please contact:
+
+Name: Surya Teja Nalla
+Email: nallasuryatheja@gmail.com
